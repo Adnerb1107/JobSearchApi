@@ -9,7 +9,7 @@ class Auth {
     }
     const userService = new User();
     const newUser = await userService.create(data);
-    if (newUser.error) {
+    if (newUser.err) {
       return newUser;
     }
     return this.#getUserData(newUser);
@@ -28,7 +28,12 @@ class Auth {
     };
   }
   #getUserData(user) {
-    const { password, ...userData } = user;
+    const userData = {
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      id: user.id,
+    };
     const token = this.#createToken(userData);
     return {
       user: userData,
